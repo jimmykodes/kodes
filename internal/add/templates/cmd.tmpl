@@ -1,0 +1,9 @@
+package cmd
+
+import "github.com/jimmykodes/kodes/internal/{{ .Package }}"
+
+func init() {
+	{{ .Command }} := {{ .Package }}.New()
+	{{ .Command }}.Init()
+	rootCmd.AddCommand({{ .Command }}.Cmd())
+}

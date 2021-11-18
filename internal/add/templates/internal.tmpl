@@ -1,0 +1,30 @@
+package {{ .Package }}
+
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+
+	"github.com/jimmykodes/kodes/internal/command"
+)
+
+var {{ .Command }} = &cobra.Command{
+	Use: "{{ .Use }}",
+	Short: "{{ .Short }}",
+	Run: run,
+}
+
+func New() *command.Command {
+	return command.New({{ .Command }}, flagInit)
+}
+
+func flagInit() error {
+	// Add flags here
+	{{ .Command }}.Flags().Bool("toggle", false, "Help text for toggle flag")
+	return nil
+}
+
+
+func run(cmd *cobra.Command, args []string) {
+	fmt.Println("{{ .Use }} called")
+}
