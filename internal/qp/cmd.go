@@ -18,14 +18,12 @@ var qpCmd = &cobra.Command{
 	Short: "Parse query params into json",
 	Long: `Parse query params into a json object.
 
-Query params can be provided from an input file using --input or from stdin if none provided.
-Results can be sent to a file using --output or to stdout if none provided.
-
-Query Params should not be prepended with the ?. Though this won't break anything, the first key will just
+- Query params can be provided from an input file using --input or from stdin if none provided.
+- Results can be sent to a file using --output or to stdout if none provided.
+- Query Params should not be prepended with the ?. Though this won't break anything, the first key will just
 have the ? prepended to it.
-
-Values will be parsed into best-guess data types. Keys that show up more than once will have their
-values represented in an array.
+- Keys that show up more than once will have their values represented in an array.
+- Unless --raw is provided, values will be parsed into best-guess data types.
 
 Example
 input: num=1&bool=false&str=string&rep=1&rep=2
@@ -41,11 +39,13 @@ func New() *command.Command {
 
 var (
 	input, output string
+	raw           bool
 )
 
 func flagInit() error {
-	qpCmd.Flags().StringVarP(&input, "input", "i", "", "input file with query params (default: stdin)")
-	qpCmd.Flags().StringVarP(&output, "output", "o", "", "output file for json (default: stdout)")
+	qpCmd.Flags().StringVarP(&input, "input", "i", "", "Input file with query params (default: stdin)")
+	qpCmd.Flags().StringVarP(&output, "output", "o", "", "Output file for json (default: stdout)")
+	qpCmd.Flags().BoolVarP(&raw, "raw", "r", false, "Do not convert data types")
 	return nil
 }
 
@@ -101,6 +101,9 @@ func runE(_ *cobra.Command, args []string) error {
 }
 
 func convert(v string) interface{} {
+	if raw {
+		return v
+	}
 	if i, err := strconv.Atoi(v); err == nil {
 		// No error, this is an int
 		return i
