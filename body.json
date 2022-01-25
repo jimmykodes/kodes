@@ -1,0 +1,9 @@
+{
+  "action": "install",
+  "kochava_app_id": "kojk-andriod-6ux518ygv",
+  "kochava_device_id": "device{{ .Index }}",
+  "data": {
+    "adid": "device{{ .Index }}",
+    "app_limit_tracking": false
+  }
+}
