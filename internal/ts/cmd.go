@@ -33,12 +33,10 @@ func run(_ *cobra.Command, args []string) {
 			fmt.Println("error processing timestamp", arg, "-", err)
 			continue
 		}
-		switch len(arg) {
-		case 10:
-			t := time.Unix(timestamp, 0)
-			fmt.Println(arg, "=>", t.Format(time.RFC3339))
-		default:
+		if len(arg) > 10 {
 			fmt.Println("invalid timestamp length")
 		}
+		t := time.Unix(timestamp, 0)
+		fmt.Println(arg, "=>", t.Format(time.RFC3339))
 	}
 }
